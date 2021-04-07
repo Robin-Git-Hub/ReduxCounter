@@ -1,39 +1,35 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './Compteur.css';
+import{useSelector, useDispatch} from 'react-redux'
 import Resultat from '../Composants/Resultat/Resultat.js';
 import IncrBtn from '../Composants/IncrBtn/IncrBtn.js';
-import {connect} from "react-redux"
 
-class Compteur extends Component {
+export default function Compteur() {
     
+    const count = useSelector (state => state.compteur)
+    const dispatch = useDispatch();
 
-    render() {
+
+    const incrementCount = () => {
+        dispatch({
+            type:'INCREMENTE'
+        })
+    }
+
+    const decrementCount = () => {
+        dispatch({
+            type:'DECREMENTE'
+        })
+    }
         return (
             <div className="cont">
-            <div className="blocConmpt">
-                <Resultat valeur={this.props.ctr} />
+                <div className="blocConmpt">
+                    <Resultat valeur={count} />
+                </div>
+                <div className="contBtn">
+                    <IncrBtn txt="Incremente" clicked={incrementCount} />
+                    <IncrBtn txt="Decremente" clicked={decrementCount} />
+                </div>
             </div>
-            <div className="contBtn">
-                <IncrBtn txt="Incremente" clicked={this.props.incremente} />
-                <IncrBtn txt="Decremente" clicked={this.props.decremente} />
-            </div>
-        </div>
         )
-    }
 }
-
-const mapStateToProps = state => {
-    return{
-        ctr : state.compteur
-    }
-}
-
-const mapDipsatchtoProps = dispatch => {
-    return {
-        incremente: () => dispatch({type:'INCREMENTE'}),
-        decremente: () => dispatch({type:'DECREMENTE'})
-    }
-}
-
-
-export default connect(mapStateToProps, mapDipsatchtoProps)(Compteur);
